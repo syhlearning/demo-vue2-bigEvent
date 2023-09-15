@@ -17,3 +17,18 @@ export const registerApi = ({ username, password, repassword }) => {
     }
   })
 }
+/**
+ * 登录接口
+ * @param {*} param0
+ * @returns
+ */
+export const loginApi = ({ username, password }) => {
+  return requset({
+    url: '/api/login',
+    method: 'post',
+    data: {
+      username,
+      password
+    }
+  })
+}

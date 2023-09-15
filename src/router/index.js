@@ -4,6 +4,10 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    redirect: '/login'
+  },
+  {
     path: '/reg',
     component: () => import('@/views/register/my-register')
   },

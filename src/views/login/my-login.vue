@@ -54,14 +54,13 @@ export default {
         if (!valid) return this.$message.error('用户名或密码错误')
         // 校验成功，向后台请求数据
         const { data: res } = await loginApi(this.loginForm)
-        console.log(res)
         // 登陆失败
         if (res.code !== 0) return this.$message.error(res.message)
         // 登陆成功
         this.$message.success(res.message)
         this.updateToken(res.token)
         // 跳转到布局页
-        // this.$router.push('/')
+        this.$router.push('/')
       })
     }
   }

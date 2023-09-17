@@ -2,7 +2,7 @@
   <el-container class="main-container">
     <el-header>
       <img src="@/assets/images/logo.png" alt="" />
-      <el-menu :default-active="activeIndex" class="el-menu-top" mode="horizontal" @select="handleSelect">
+      <el-menu  class="el-menu-top" mode="horizontal">
         <el-submenu index="1">
           <template slot="title">
             <!-- 头像 -->
@@ -21,8 +21,34 @@
         <div class="user-box">
           <img :src="user_pic" alt="" v-if="user_pic">
           <img src="@/assets/images/head.png" alt="" v-else>
-          <span>你好  {{ nickname||username}}</span>
+          <span>你好 {{ nickname||username}}</span>
         </div>
+        <el-menu class="el-menu-vertical-demo"
+        @open="handleOpen" @close="handleClose"
+        background-color="#23262e" text-color="#fff"
+        active-text-color="#ffd04b"
+        default-active='/home'
+         router>
+          <template v-for="item in menus">
+            <el-menu-item :index="item.indexPath" v-if="!item.children" :key='item.indexPath'>
+              <i :class="item.icon"></i>
+              <span slot="title">{{item.title}}</span>
+            </el-menu-item>
+            <el-submenu :index="item.indexPath" :key='item.indexPath' v-else>
+              <template slot="title">
+                <i :class="item.icon"></i>
+                <span>{{item.title}}</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item v-for="obj in item.children" :key='obj.indexPath' :index="obj.indexPath">
+                  <i :class="obj.icon">
+                    {{obj.title}}
+                  </i>
+                </el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+          </template>
+        </el-menu>
       </el-aside>
       <el-container>
         <el-main>Main</el-main>
@@ -34,7 +60,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getMenusApi } from '@/api'
 export default {
+  data () {
+    return {
+      menus: []
+    }
+  },
   methods: {
     quitFn () {
       this.$confirm('确认退出登录？', '提示', {
@@ -53,7 +85,19 @@ export default {
             message: '取消成功'
           })
         })
+    },
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
     }
+  },
+  created () {
+    getMenusApi().then(res => {
+      console.log(res)
+      this.menus = res.data.data
+    })
   },
   computed: {
     ...mapGetters(['username', 'nickname', 'user_pic'])
@@ -125,5 +169,8 @@ export default {
 }
 .el-menu-top {
   background-color: #000;
+}
+.el-menu-vertical-demo span {
+  font-size: 20px;
 }
 </style>

@@ -25,7 +25,7 @@
 import { registerApi } from '@/api/index'
 export default {
   data () {
-    const samePassword = (rules, value, callback) => {
+    const samePassword = (rule, value, callback) => {
       if (value !== this.ruleForm.password) {
         callback(new Error('两次输入密码不一致'))
       } else {

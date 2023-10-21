@@ -5,6 +5,11 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/global.css'
+import '@/vue-quill-editor/vue-quill-editor'
+import dayjs from 'dayjs'
+Vue.prototype.$formDate = (dateobj) => {
+  return dayjs(dateobj).format('YYYY-MM-DD HH:mm:ss')
+}
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

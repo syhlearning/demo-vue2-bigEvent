@@ -20,7 +20,7 @@ export default new Vuex.Store({
   actions: {
     async initUserInfo (store) {
       const res = await getuserInfoApi()
-      console.log(res)
+      // console.log(res)
       if (res.data.code === 0) {
         store.commit('updateUserInfo', res.data.data)
       }

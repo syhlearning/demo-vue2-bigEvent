@@ -2,11 +2,13 @@
   <el-container class="main-container">
     <el-header>
       <img src="@/assets/images/logo.png" alt="" />
-      <el-menu  class="el-menu-top" mode="horizontal">
+      <el-menu class="el-menu-top" mode="horizontal">
         <el-submenu index="1">
           <template slot="title">
             <!-- 头像 -->
-            <img src="@/assets/images/head.png" alt="" class="avatar" />
+            <img :src="user_pic" alt="" v-if="user_pic" class="avatar">
+            <img src="@/assets/images/head.png" alt="" v-else class="avatar">
+            <!-- <img src="@/assets/images/head.png" alt="" class="avatar" /> -->
             <span>个人中心</span>
           </template>
           <el-menu-item index="1-1"><i class="el-icon-s-operation"></i>基本资料</el-menu-item>
@@ -23,22 +25,20 @@
           <img src="@/assets/images/head.png" alt="" v-else>
           <span>你好 {{ nickname||username}}</span>
         </div>
-        <el-menu class="el-menu-vertical-demo"
-        @open="handleOpen" @close="handleClose"
-        background-color="#23262e" text-color="#fff"
-        active-text-color="#ffd04b"
-        default-active='/home'
-         router>
+        <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#23262e" text-color="#fff" active-text-color="#ffd04b" :default-active="$route.path" router>
           <template v-for="item in menus">
+
             <el-menu-item :index="item.indexPath" v-if="!item.children" :key='item.indexPath'>
               <i :class="item.icon"></i>
               <span slot="title">{{item.title}}</span>
             </el-menu-item>
+
             <el-submenu :index="item.indexPath" :key='item.indexPath' v-else>
               <template slot="title">
                 <i :class="item.icon"></i>
                 <span>{{item.title}}</span>
               </template>
+
               <el-menu-item-group>
                 <el-menu-item v-for="obj in item.children" :key='obj.indexPath' :index="obj.indexPath">
                   <i :class="obj.icon">
@@ -46,12 +46,15 @@
                   </i>
                 </el-menu-item>
               </el-menu-item-group>
+
             </el-submenu>
           </template>
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
         <el-footer>Footer</el-footer>
       </el-container>
     </el-container>
@@ -95,7 +98,7 @@ export default {
   },
   created () {
     getMenusApi().then(res => {
-      console.log(res)
+      // console.log(res)
       this.menus = res.data.data
     })
   },
